@@ -9,11 +9,5 @@ class Modul extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
-
-    // Relasi dengan model Lks
-    public function lks()
-    {
-        return $this->hasMany(Lks::class);
-    }
+    protected $fillable = ['title', 'pdf_file'];
 }

@@ -15,12 +15,12 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <!--<x-nav-link :href="route('lks.index')" :active="request()->routeIs('lks.*')">
-                        Lks
+                    <x-nav-link :href="route('student.index')" :active="request()->routeIs('student.*')">
+                        Siswa
                     </x-nav-link>
                     <x-nav-link :href="route('modul.index')" :active="request()->routeIs('modul.*')">
                         Modul
-                    </x-nav-link> -->
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -76,8 +76,8 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('lks.index')" :active="request()->routeIs('lks.*')">
-                Lks
+            <x-responsive-nav-link :href="route('student.index')" :active="request()->routeIs('student.*')">
+                Siswa
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('modul.index')" :active="request()->routeIs('modul.*')">
                 Modul

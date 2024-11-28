@@ -9,43 +9,65 @@ class ModulController extends Controller
 {
     public function index()
     {
+        // Ambil semua data modul
         $moduls = Modul::all();
         return view('modul.index', compact('moduls'));
     }
 
+    public function show($id)
+    {
+        // Cari modul berdasarkan ID
+        $modul = Modul::findOrFail($id);
+        $filePath = storage_path('app/pdf/' . $modul->pdf_file);
+
+        // Pastikan file ada dan valid
+        if (file_exists($filePath)) {
+            return response()->file($filePath);
+        } else {
+            abort(404, 'File not found');
+        }
+    }
+
+    public function download($id)
+    {
+        // Cari modul berdasarkan ID
+        $modul = Modul::findOrFail($id);
+        $filePath = storage_path('app/pdf/' . $modul->pdf_file);
+
+        // Pastikan file ada dan valid
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        } else {
+            abort(404, 'File not found');
+        }
+    }
+
+    // Menampilkan formulir untuk menambahkan modul
     public function create()
     {
         return view('modul.create');
     }
 
+    // Menyimpan modul dan file PDF ke storage
     public function store(Request $request)
     {
+        // Validasi form input
         $request->validate([
-            'name' => 'required',
+            'title' => 'required|string|max:255',
+            'pdf_file' => 'required|file|mimes:pdf|max:10240', // 10MB maksimal
         ]);
 
-        Modul::create($request->all());
-        return redirect()->route('modul.index');
-    }
+        // Menyimpan file PDF ke folder storage/app/pdf
+        $fileName = $request->pdf_file->getClientOriginalName();
+        $request->pdf_file->storeAs('pdf', $fileName, 'public'); // Menyimpan file PDF
 
-    public function edit(Modul $modul)
-    {
-        return view('modul.edit', compact('modul'));
-    }
-
-    public function update(Request $request, Modul $modul)
-    {
-        $request->validate([
-            'name' => 'required',
+        // Simpan data modul ke database
+        Modul::create([
+            'title' => $request->title,
+            'pdf_file' => $fileName,  // Menyimpan nama file PDF di database
         ]);
 
-        $modul->update($request->all());
-        return redirect()->route('modul.index');
+        return redirect()->route('modul.index')->with('success', 'Modul berhasil ditambahkan!');
     }
 
-    public function destroy(Modul $modul)
-    {
-        $modul->delete();
-        return redirect()->route('modul.index');
-    }
 }

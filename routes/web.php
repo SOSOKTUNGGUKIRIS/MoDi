@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LksController;
 use App\Http\Controllers\ModulController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StudentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,8 +23,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     
-    Route::resource('lks', LksController::class);
-    Route::resource('modul', ModulController::class);
+    Route::resource('student', StudentController::class);
+    Route::get('/moduls', [ModulController::class, 'index'])->name('modul.index');
+    Route::get('/moduls/{id}', [ModulController::class, 'show'])->name('moduls.show');
+    Route::get('/moduls/{id}/download', [ModulController::class, 'download'])->name('moduls.download');
+    Route::get('/modul/create', [ModulController::class, 'create'])->name('modul.create');
+    Route::post('/moduls', [ModulController::class, 'store'])->name('moduls.store');
 });
 
 require __DIR__.'/auth.php';

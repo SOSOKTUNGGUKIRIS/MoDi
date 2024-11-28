@@ -13,7 +13,8 @@ return new class extends Migration
     {
     Schema::create('moduls', function (Blueprint $table) {
         $table->id();
-        $table->string('name');
+        $table->string('title');
+        $table->string('pdf_file'); // untuk menyimpan nama file PDF
         $table->timestamps();
     });
     }
